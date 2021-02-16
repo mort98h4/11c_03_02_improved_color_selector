@@ -1,37 +1,40 @@
 "use strict";
 
-window.addEventListener("DOMContentLoaded", start);
+window.addEventListener("DOMContentLoaded", getTheHex);
 
-function start() {
-    console.log("start");
-    const colorValue = document.querySelector("#colorPicker").value;
-    getTheHex(colorValue);
+function getTheHex() {
+    const hex = document.querySelector("#colorPicker").value;
+    //console.log(hex);
+    showInformation(hex);
+}
 
+function showInformation(hex) {
+    const rgb = hexToRGB(hex)
+    //console.log(rgb);
+    const hsl = rgbToHSL(rgb);
+    //console.log(hsl);
+    const css = rgbToCSS(rgb);
+    //console.log(css);
+
+    showHex(hex);
+    showRGB(rgb);
+    showHSL(hsl);
+    changeBoxColor(css);
     document.querySelector("#colorPicker").addEventListener("input", getTheHex);
 }
 
-function getTheHex() {
-    const colorValue = document.querySelector("#colorPicker").value;
-    console.log(colorValue);
-    changeBoxColor(colorValue);
-    showHex(colorValue);
-    convertToRGB(colorValue);
-}
-
-function convertToRGB(hexColor) {
-    hexColor = hexColor.substring(1);
-    let r = hexColor.substring(0, 2);
-    let g = hexColor.substring(2, 4);
-    let b = hexColor.substring(4, 6);
+function hexToRGB(hex) {
+    hex = hex.substring(1);
+    let r = hex.substring(0, 2);
+    let g = hex.substring(2, 4);
+    let b = hex.substring(4, 6);
     r = Number.parseInt(r, 16);
     g = Number.parseInt(g, 16);
     b = Number.parseInt(b, 16);
-    console.log({r, g, b});
-    showRGB(r, g, b);
-    convertToHSL(r, g, b);
+    return {r, g, b};
 }
 
-function convertToHSL(r, g, b) {
+function rgbToHSL({r, g, b}) {
     r /= 255;
     g /= 255;
     b /= 255;
@@ -72,23 +75,27 @@ function convertToHSL(r, g, b) {
     h = Math.round(h);
     s = Math.round(s);
     l = Math.round(l);
-    console.log("hsl(%f,%f%,%f%)", h, s, l); // just for testing
-    showHSL(h, s, l);
+    //console.log("hsl(%f,%f%,%f%)", h, s, l); // just for testing
+    return {h, s, l};
 }
 
-function showHex(hexColor) {
-    hexColor = hexColor.toUpperCase();
-    document.querySelector("#hex").textContent = `HEX: ${hexColor}`;
+function rgbToCSS({r, g, b}) {
+    return `rgb(${r}, ${g}, ${b})`;
 }
 
-function showRGB(r, g, b) {
+function showHex(hex) {
+    hex = hex.toUpperCase();
+    document.querySelector("#hex").textContent = `HEX: ${hex}`;
+}
+
+function showRGB({r, g, b}) {
     document.querySelector("#rgb").textContent = `R: ${r} G: ${g} B: ${b}`;
 }
 
-function showHSL(h, s, l) {
+function showHSL({h, s, l}) {
     document.querySelector("#hsl").textContent = `H: ${h} S: ${s}% L: ${l}%`;
 }
 
-function changeBoxColor(hexColor) {
-    document.querySelector(".box").style.backgroundColor = hexColor;
+function changeBoxColor(css) {
+    document.querySelector(".box").style.backgroundColor = css;
 }
