@@ -1,13 +1,14 @@
 "use strict";
 
-window.addEventListener("DOMContentLoaded", getTheHex);
+window.addEventListener("DOMContentLoaded", init);
 
-function getTheHex() {
-    document.querySelector("#colorPicker").addEventListener("input", showInformation);
+function init() {
+    const hex = document.querySelector("#colorPicker").value;
+    showInformation(hex);
+    
 }
 
-function showInformation() {
-    const hex = document.querySelector("#colorPicker").value;
+function showInformation(hex) {
     const rgb = hexToRGB(hex)
     const hsl = rgbToHSL(rgb);
     const css = rgbToCSS(rgb);
@@ -16,16 +17,14 @@ function showInformation() {
     showRGB(rgb);
     showHSL(hsl);
     changeBoxColor(css);
+    document.querySelector("#colorPicker").addEventListener("input", init);
 }
 
 function hexToRGB(hex) {
     hex = hex.substring(1);
-    let r = hex.substring(0, 2);
-    let g = hex.substring(2, 4);
-    let b = hex.substring(4, 6);
-    r = Number.parseInt(r, 16);
-    g = Number.parseInt(g, 16);
-    b = Number.parseInt(b, 16);
+    const r = Number.parseInt(hex.substring(0, 2), 16);
+    const g = Number.parseInt(hex.substring(2, 4), 16);
+    const b = Number.parseInt(hex.substring(4, 6), 16);
     return {r, g, b};
 }
 
