@@ -3,24 +3,19 @@
 window.addEventListener("DOMContentLoaded", getTheHex);
 
 function getTheHex() {
-    const hex = document.querySelector("#colorPicker").value;
-    //console.log(hex);
-    showInformation(hex);
+    document.querySelector("#colorPicker").addEventListener("input", showInformation);
 }
 
-function showInformation(hex) {
+function showInformation() {
+    const hex = document.querySelector("#colorPicker").value;
     const rgb = hexToRGB(hex)
-    //console.log(rgb);
     const hsl = rgbToHSL(rgb);
-    //console.log(hsl);
     const css = rgbToCSS(rgb);
-    //console.log(css);
 
     showHex(hex);
     showRGB(rgb);
     showHSL(hsl);
     changeBoxColor(css);
-    document.querySelector("#colorPicker").addEventListener("input", getTheHex);
 }
 
 function hexToRGB(hex) {
